@@ -15,5 +15,16 @@ export const productService = defineStore('ProductService', {
         headers: { 'Authorization': 'Bearer ' + token },
       })
     },
+    fetchSubCategories(params) {
+      return axios.get('/sub-categories', {
+        params: params,
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    },
+    storeProduct(body) {
+      return axios.post('/products', body, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    },
   },
 })

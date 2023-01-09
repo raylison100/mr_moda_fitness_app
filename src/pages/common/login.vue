@@ -18,7 +18,7 @@ import { useAppAbility } from '@/plugins/casl/useAppAbility'
 
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
-const isPasswordVisible = ref(false)
+let isPasswordVisible = ref(false)
 const route = useRoute()
 const router = useRouter()
 const ability = useAppAbility()

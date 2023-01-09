@@ -2,11 +2,15 @@
 import { requiredValidator } from '@validators'
 import { productService } from "@/services/products/productService"
 
+const router = useRouter()
+
 const name = ref('')
 const purchase_price = ref('')
 const percentage_on_sale = ref('')
 const final_value = ref('')
 const product_type = ref('')
+const size = ref('')
+const qtd = ref('')
 const departament = ref()
 const category = ref()
 const sub_category = ref()
@@ -22,6 +26,14 @@ const product_type_items = [
   'U',
 ]
 
+const size_items = [
+  'PP',
+  'P',
+  'M',
+  'G',
+  'GG',
+]
+
 const service = productService()
 
 service.fetchDepartments().then(response => {
@@ -31,6 +43,8 @@ service.fetchDepartments().then(response => {
 })
 
 const selectCategories = () => {
+  category.value = null
+
   const params = {
     department_id: departament._value.id,
   }
@@ -41,23 +55,73 @@ const selectCategories = () => {
     console.log(err)
   })
 }
+
+const selectSubCategories = () => {
+
+  sub_category.value = null
+
+  const params = {
+    category_id: category._value.id,
+  }
+
+  service.fetchSubCategories(params).then(response => {
+    sub_categories_items.value = response.data.data
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+const calculetedFinalValue = () => {
+  if (purchase_price.value !== '' && percentage_on_sale.value !== '') {
+    final_value.value = (purchase_price.value / (1 - percentage_on_sale.value / 100)).toFixed(2)
+  }
+}
+
+const onSubmit = () => {
+  form.value.validate().then(validate => {
+    if (validate.valid) {
+      storeProduct()
+    }
+  })
+}
+
+const storeProduct = () => {
+  const body = {
+    name: name.value,
+    purchase_price: purchase_price.value,
+    percentage_on_sale: percentage_on_sale.value,
+    final_value: final_value.value,
+    sub_category_id: sub_category.value.id,
+    product_type: product_type.value,
+    size: size.value,
+    qtd: qtd.value,
+  }
+
+  service.storeProduct(body).then(response => {
+    console.log(response)
+  }).catch(err => {
+    console.log(err)
+  })
+}
 </script>
 
 <template>
   <VForm
     ref="form"
     lazy-validation
+    @submit.prevent="onSubmit"
   >
     <VRow>
       <VCol
         cols="12"
-        md="6"
+        md="4"
       >
         <VTextField
           v-model="name"
           size="30"
           :rules="[requiredValidator]"
           label="Name"
+          name="name"
           required
         />
       </VCol>
@@ -70,9 +134,37 @@ const selectCategories = () => {
           v-model="product_type"
           :items="product_type_items"
           :rules="[requiredValidator]"
-          label="Tamanhos"
+          label="Tipo"
           name="product_type"
           require
+        />
+      </VCol>
+
+      <VCol
+        cols="12"
+        md="3"
+      >
+        <VSelect
+          v-model="size"
+          :items="size_items"
+          :rules="[requiredValidator]"
+          label="Tamanho"
+          name="size"
+          require
+        />
+      </VCol>
+
+      <VCol
+        cols="12"
+        md="2"
+      >
+        <VTextField
+          v-model="qtd"
+          :rules="[requiredValidator]"
+          label="Qtd"
+          type="number"
+          min="0"
+          required
         />
       </VCol>
     </VRow>
@@ -90,6 +182,7 @@ const selectCategories = () => {
           type="number"
           min="0"
           required
+          @blur="calculetedFinalValue"
         />
       </VCol>
 
@@ -105,6 +198,7 @@ const selectCategories = () => {
           min="0"
           type="number"
           required
+          @blur="calculetedFinalValue"
         />
       </VCol>
 
@@ -153,6 +247,7 @@ const selectCategories = () => {
           item-value="id"
           return-object
           require
+          @blur="selectSubCategories"
         />
       </VCol>
 
@@ -176,6 +271,13 @@ const selectCategories = () => {
         cols="12"
         class="d-flex flex-wrap gap-4"
       >
+        <VBtn
+          type="submit"
+          @click="form?.validate()"
+        >
+          Salvar
+        </VBtn>
+
         <VBtn
           color="success"
           @click="form?.validate()"
