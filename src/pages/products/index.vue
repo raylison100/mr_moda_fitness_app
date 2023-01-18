@@ -8,19 +8,19 @@ const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalInvoices = ref(0)
+const totalProductus = ref(0)
 const products = ref([])
 const selectedRows = ref([])
 
 watchEffect(() => {
   service.fetchProducts({
-    q: searchQuery.value,
-    perPage: rowPerPage.value,
-    currentPage: currentPage.value,
+    search: searchQuery.value,
+    limit: rowPerPage.value,
+    page: currentPage.value,
   }).then(response => {
     products.value = response.data.data
-    totalPage.value = response.data.meta.total_pages
-    totalInvoices.value = response.data.meta.total
+    totalPage.value = response.data.meta.pagination.total_pages
+    totalProductus.value = response.data.meta.pagination.total
   }).catch(error => {
     console.log(error)
   })
@@ -35,7 +35,7 @@ const paginationData = computed(() => {
   const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalInvoices.value} entries`
+  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProductus.value} entradas`
 })
 </script>
 
@@ -51,9 +51,9 @@ const paginationData = computed(() => {
           <!-- 👉 Rows per page -->
           <div
             class="d-flex align-center"
-            style="width: 135px;"
+            style="width: 9em;"
           >
-            <span class="text-no-wrap me-3">Show:</span>
+            <span class="text-no-wrap me-3">Mostrar:</span>
             <VSelect
               v-model="rowPerPage"
               density="compact"
@@ -62,7 +62,7 @@ const paginationData = computed(() => {
           </div>
 
           <div class="me-3">
-            <!-- 👉 Create invoice -->
+            <!-- 👉 Create Products -->
             <VBtn
               prepend-icon="tabler-plus"
               :to="{ name: 'products-store' }"
@@ -74,23 +74,11 @@ const paginationData = computed(() => {
 
           <div class="d-flex align-center flex-wrap gap-4">
             <!-- 👉 Search  -->
-            <div class="invoice-list-filter">
+            <div class="table-search-filter">
               <VTextField
                 v-model="searchQuery"
-                placeholder="Search Invoice"
+                placeholder="Buscar Produto"
                 density="compact"
-              />
-            </div>
-
-            <!-- 👉 Select status -->
-            <div class="invoice-list-filter">
-              <VSelect
-                v-model="selectedStatus"
-                label="Select Status"
-                clearable
-                clear-icon="tabler-x"
-                single-line
-                :items="['Downloaded', 'Draft', 'Sent', 'Paid', 'Partial Payment', 'Past Due']"
               />
             </div>
           </div>
@@ -107,11 +95,11 @@ const paginationData = computed(() => {
               </th>
 
               <th scope="col">
-                Nome
+                NOME
               </th>
 
               <th scope="col">
-                ACTIONS
+                AÇÕES
               </th>
             </tr>
           </thead>
@@ -128,9 +116,9 @@ const paginationData = computed(() => {
                   #{{ product.id }}
                 </RouterLink>
               </td>
-              <!-- 👉 total -->
-              <td class="text-center">
-                ${{ product.name }}
+              <!-- 👉 Name -->
+              <td>
+                {{ product.name }}
               </td>
               <!-- 👉 Actions -->
               <td style="width: 8rem;">
@@ -139,6 +127,7 @@ const paginationData = computed(() => {
                   variant="text"
                   color="default"
                   size="x-small"
+                  :to="{ name: 'products-id', params: { id: product.id } }"
                 >
                   <VIcon
                     :size="22"
@@ -186,6 +175,12 @@ const paginationData = computed(() => {
     </VCol>
   </VRow>
 </template>
+
+<style lang="scss">
+  .table-search-filter {
+    inline-size: 12rem;
+  }
+</style>
 
 <route lang="yaml">
 meta:

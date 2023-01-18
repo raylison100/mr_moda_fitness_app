@@ -32,5 +32,15 @@ export const productService = defineStore('ProductService', {
         headers: { 'Authorization': 'Bearer ' + token },
       })
     },
+    fetchProductId(id) {
+      return axios.get(`/products/${id}`, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    },
+    updateProduct(body, id) {
+      return axios.put(`/products/${id}`, body, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    },
   },
 })
