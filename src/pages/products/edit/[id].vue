@@ -36,7 +36,7 @@ service.fetchProductId(Number(route.params.id)).then(response => {
   }
 }).catch(err => {
   console.log(err)
-  router.push('/products')
+  router.push('/products/list')
 })
 </script>
 

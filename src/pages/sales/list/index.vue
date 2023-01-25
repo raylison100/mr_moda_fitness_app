@@ -1,7 +1,7 @@
 <script setup>
-import { productService } from "@/services/products/productService"
+import { saleService } from "@/services/sales/saleService"
 
-const service = productService()
+const service = saleService()
 const router = useRouter()
 
 const searchQuery = ref('')
@@ -9,16 +9,16 @@ const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
 const totalProductus = ref(0)
-const products = ref([])
+const sales = ref([])
 const selectedRows = ref([])
 
 watchEffect(() => {
-  service.fetchProducts({
+  service.fetchSales({
     search: searchQuery.value,
     limit: rowPerPage.value,
     page: currentPage.value,
   }).then(response => {
-    products.value = response.data.data
+    sales.value = response.data.data
     totalPage.value = response.data.meta.pagination.total_pages
     totalProductus.value = response.data.meta.pagination.total
   }).catch(error => {
@@ -32,8 +32,8 @@ watchEffect(() => {
 })
 
 const paginationData = computed(() => {
-  const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = sales.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = sales.value.length + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProductus.value} entradas`
 })
@@ -45,7 +45,7 @@ const paginationData = computed(() => {
       cols="12"
     >
       <VCard
-        v-if="products"
+        v-if="sales"
       >
         <VCardText class="d-flex align-center flex-wrap gap-4">
           <!-- 👉 Rows per page -->
@@ -65,9 +65,9 @@ const paginationData = computed(() => {
             <!-- 👉 Create Products -->
             <VBtn
               prepend-icon="tabler-plus"
-              :to="{ name: 'products-store' }"
+              :to="{ name: 'sales-store' }"
             >
-              Novo Produto
+              Nova Venda
             </VBtn>
           </div>
           <VSpacer />
@@ -77,7 +77,7 @@ const paginationData = computed(() => {
             <div class="table-search-filter">
               <VTextField
                 v-model="searchQuery"
-                placeholder="Buscar Produto"
+                placeholder="Buscar Venda"
                 density="compact"
               />
             </div>
@@ -95,7 +95,27 @@ const paginationData = computed(() => {
               </th>
 
               <th scope="col">
-                NOME
+                MONTANTE
+              </th>
+
+              <th scope="col">
+                PRESTAÇÃO
+              </th>
+
+              <th scope="col">
+                PARCELA QTD
+              </th>
+
+              <th scope="col">
+                VALOR DA PARCELA
+              </th>
+
+              <th scope="col">
+                VALOR EM DINHEIRO
+              </th>
+
+              <th scope="col">
+                VALOR DE DESCONTO
               </th>
 
               <th scope="col">
@@ -106,28 +126,47 @@ const paginationData = computed(() => {
           <!-- 👉 Table Body -->
           <tbody>
             <tr
-              v-for="product in products"
-              :key="product.id"
+              v-for="sale in sales"
+              :key="sale.id"
               style="height: 3.75rem;"
             >
-              <!-- 👉 Id -->
               <td>
-                <RouterLink :to="{ name: 'products', params: { id: product.id } }">
-                  #{{ product.id }}
+                <RouterLink :to="{ name: 'sales-show-id', params: { id: product.id } }">
+                  #{{ sale.id }}
                 </RouterLink>
               </td>
-              <!-- 👉 Name -->
+
               <td>
-                {{ product.name }}
+                {{ sale.amount }}
               </td>
-              <!-- 👉 Actions -->
+
+              <td>
+                {{ sale.installment }}
+              </td>
+
+              <td>
+                {{ sale.installment_qtd }}
+              </td>
+
+              <td>
+                R$ {{ sale.installment_value }}
+              </td>
+
+              <td>
+                R$ {{ sale.cash_value }}
+              </td>
+
+              <td>
+                R$ {{ sale.discount_value }}
+              </td>
+
               <td style="width: 8rem;">
                 <VBtn
                   icon
                   variant="text"
                   color="default"
                   size="x-small"
-                  :to="{ name: 'products-id', params: { id: product.id } }"
+                  :to="{ name: 'products-edit-id', params: { id: sale.id } }"
                 >
                   <VIcon
                     :size="22"
@@ -135,10 +174,12 @@ const paginationData = computed(() => {
                   />
                 </VBtn>
               </td>
+
+
             </tr>
           </tbody>
           <!-- 👉 table footer  -->
-          <tfoot v-show="!products.length">
+          <tfoot v-show="!sales.length">
             <tr>
               <td
                 colspan="8"

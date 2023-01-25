@@ -41,7 +41,7 @@ const acronymsName = () => {
       color="primary"
       variant="tonal"
     >
-      <span class="text-white">{{ acronymsName() }}</span>
+      <span>{{ acronymsName() }}</span>
 
       <!-- SECTION Menu -->
       <VMenu

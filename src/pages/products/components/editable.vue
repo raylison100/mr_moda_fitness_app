@@ -1,7 +1,7 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import { requiredValidator } from '@validators'
-import { productService } from "@/services/products/productService"
+import {requiredValidator} from '@validators'
+import {productService} from "@/services/products/productService"
 
 const props = defineProps({
   data: {
@@ -65,8 +65,8 @@ const calculetedFinalValue = () => {
   }
 }
 
-const mountStock = () =>{
-  if (props.data.product.id == null){
+const mountStock = () => {
+  if (props.data.product.id == null) {
 
     const size_items = [
       'PP',
@@ -77,10 +77,10 @@ const mountStock = () =>{
     ]
 
     size_items.forEach(element => {
-        props.data.product.stocks.push({
-          size: element,
-          qtd: 0
-        })
+      props.data.product.stocks.push({
+        size: element,
+        qtd: 0
+      })
     });
   }
 }
@@ -106,13 +106,13 @@ const storeProduct = () => {
     stock: props.data.product.stocks
   }
 
-  if (props.data.product.id !== null){
+  if (props.data.product.id !== null) {
     service.updateProduct(body, props.data.product.id).then(() => {
       router.back()
     }).catch(err => {
       console.log(err)
     })
-  }else {
+  } else {
     service.storeProduct(body).then(() => {
       router.back()
     }).catch(err => {
@@ -130,190 +130,190 @@ mountStock()
       cols="12"
     >
       <VCard>
-        <div>
+        <VForm
+          ref="form"
+          lazy-validation
+          @submit.prevent="onSubmit"
+        >
           <VCardItem>
-            <VCardTitle>Novo Produto</VCardTitle>
+            <VCardTitle>{{ props.data.product.id ? 'Editar ' : 'Novo ' }} Produto</VCardTitle>
           </VCardItem>
           <VCardText>
-            <VForm
-              ref="form"
-              lazy-validation
-              @submit.prevent="onSubmit"
-            >
-              <VRow>
-                <VCol
-                  cols="12"
-                  md="4"
-                >
-                  <VTextField
-                    v-model="props.data.product.name"
-                    size="30"
-                    :rules="[requiredValidator]"
-                    label="Name"
-                    name="name"
-                    required
-                  />
-                </VCol>
+            <VRow>
+              <VCol
+                cols="12"
+                md="4"
+              >
+                <VTextField
+                  v-model="props.data.product.name"
+                  size="30"
+                  :rules="[requiredValidator]"
+                  label="Name"
+                  name="name"
+                  required
+                />
+              </VCol>
 
-                <VCol
-                  cols="12"
-                  md="1"
-                >
-                  <VSelect
-                    v-model="props.data.product.product_type"
-                    :items="product_type_items"
-                    :rules="[requiredValidator]"
-                    label="Tipo"
-                    name="product_type"
-                    require
-                  />
-                </VCol>
+              <VCol
+                cols="12"
+                md="1"
+              >
+                <VSelect
+                  v-model="props.data.product.product_type"
+                  :items="product_type_items"
+                  :rules="[requiredValidator]"
+                  label="Tipo"
+                  name="product_type"
+                  require
+                />
+              </VCol>
 
-                <VCol
-                  cols="12"
-                  md="2"
-                >
-                  <VTextField
-                    v-model="props.data.product.purchase_price"
-                    :rules="[requiredValidator]"
-                    label="Preço de venda"
-                    prefix="$"
-                    type="number"
-                    min="0"
-                    required
-                    @blur="calculetedFinalValue"
-                  />
-                </VCol>
+              <VCol
+                cols="12"
+                md="2"
+              >
+                <VTextField
+                  v-model="props.data.product.purchase_price"
+                  :rules="[requiredValidator]"
+                  label="Preço de venda"
+                  prefix="$"
+                  type="number"
+                  min="0"
+                  required
+                  @blur="calculetedFinalValue"
+                />
+              </VCol>
 
-                <VCol
-                  cols="12"
-                  md="2"
-                >
-                  <VTextField
-                    v-model="props.data.product.percentage_on_sale"
-                    :rules="[requiredValidator]"
-                    label="Percentual na venda"
-                    prefix="%"
-                    min="0"
-                    type="number"
-                    required
-                    @blur="calculetedFinalValue"
-                  />
-                </VCol>
+              <VCol
+                cols="12"
+                md="2"
+              >
+                <VTextField
+                  v-model="props.data.product.percentage_on_sale"
+                  :rules="[requiredValidator]"
+                  label="Percentual na venda"
+                  prefix="%"
+                  min="0"
+                  type="number"
+                  required
+                  @blur="calculetedFinalValue"
+                />
+              </VCol>
 
-                <VCol
-                  cols="12"
-                  md="2"
-                >
-                  <VTextField
-                    v-model="props.data.product.final_value"
-                    label="Valor Final"
-                    prefix="$"
-                    type="number"
-                    disabled
-                  />
-                </VCol>
-              </VRow>
+              <VCol
+                cols="12"
+                md="2"
+              >
+                <VTextField
+                  v-model="props.data.product.final_value"
+                  label="Valor Final"
+                  prefix="$"
+                  type="number"
+                  disabled
+                />
+              </VCol>
+            </VRow>
+            <br>
+            <VRow>
+              <VCol
+                cols="12"
+                md="4"
+              >
+                <VSelect
+                  v-model="props.data.product.departament"
+                  :items="departaments_items"
+                  :rules="[requiredValidator]"
+                  item-title="name"
+                  item-value="id"
+                  label="Departamento"
+                  return-object
+                  require
+                  @blur="selectCategories"
+                />
+              </VCol>
 
-              <br>
+              <VCol
+                cols="12"
+                md="4"
+              >
+                <VSelect
+                  v-model="props.data.product.category"
+                  :items="categories_items"
+                  :rules="[requiredValidator]"
+                  label="Categoria"
+                  item-title="name"
+                  item-value="id"
+                  return-object
+                  require
+                  @blur="selectSubCategories"
+                />
+              </VCol>
 
-              <VRow>
-                <VCol
-                  cols="12"
-                  md="4"
-                >
-                  <VSelect
-                    v-model="props.data.product.departament"
-                    :items="departaments_items"
-                    :rules="[requiredValidator]"
-                    item-title="name"
-                    item-value="id"
-                    label="Departamento"
-                    return-object
-                    require
-                    @blur="selectCategories"
-                  />
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  md="4"
-                >
-                  <VSelect
-                    v-model="props.data.product.category"
-                    :items="categories_items"
-                    :rules="[requiredValidator]"
-                    label="Categoria"
-                    item-title="name"
-                    item-value="id"
-                    return-object
-                    require
-                    @blur="selectSubCategories"
-                  />
-                </VCol>
-
-                <VCol
-                  cols="12"
-                  md="4"
-                >
-                  <VSelect
-                    v-model="props.data.product.sub_category"
-                    :items="sub_categories_items"
-                    :rules="[requiredValidator]"
-                    label="Sub Categoria"
-                    item-title="name"
-                    item-value="id"
-                    return-object
-                    require
-                  />
-                </VCol>
-              </VRow>
-              <br>
-              <h4>
-                Tamanhos
-              </h4>
-              <br>
-              <VRow>
-                <VCol cols="4"  v-for="(item, index) in props.data.product.stocks">
-                  <VRow no-gutters>
-                    <VCol
-                      cols="12"
-                      md="2"
-                    >
-                      <label >{{ item.size }}</label>
-                    </VCol>
-
-                    <VCol
-                      cols="12"
-                      md="4"
-                    >
-                      <VTextField
-                        v-model="props.data.product.stocks[index].qtd"
-                        label="Qtd"
-                        type="number"
-                        min="0"
-                      />
-                    </VCol>
-                  </VRow>
-                </VCol>
-              </VRow>
-              <br>
-              <VRow>
-                <VCol
-                  cols="12"
-                  class="d-flex flex-wrap gap-4"
-                >
-                  <VBtn
-                    type="submit"
-                    @click="form?.validate()"
-                  >
-                    Salvar
-                  </VBtn>
-                </VCol>
-              </VRow>
-            </VForm>
+              <VCol
+                cols="12"
+                md="4"
+              >
+                <VSelect
+                  v-model="props.data.product.sub_category"
+                  :items="sub_categories_items"
+                  :rules="[requiredValidator]"
+                  label="Sub Categoria"
+                  item-title="name"
+                  item-value="id"
+                  return-object
+                  require
+                />
+              </VCol>
+            </VRow>
           </VCardText>
-        </div>
+          <br>
+          <VDivider/>
+          <br>
+          <VCardText>
+            <h4>
+              Tamanhos
+            </h4>
+            <br>
+            <VRow>
+              <VCol cols="4" v-for="(item, index) in props.data.product.stocks">
+                <VRow no-gutters>
+                  <VCol
+                    cols="12"
+                    md="2"
+                  >
+                    <label>{{ item.size }}</label>
+                  </VCol>
+
+                  <VCol
+                    cols="12"
+                    md="4"
+                  >
+                    <VTextField
+                      v-model="props.data.product.stocks[index].qtd"
+                      label="Qtd"
+                      type="number"
+                      min="0"
+                    />
+                  </VCol>
+                </VRow>
+              </VCol>
+            </VRow>
+            <br>
+            <VRow>
+              <VCol
+                cols="12"
+                class="d-flex flex-wrap gap-4"
+              >
+                <VBtn
+                  type="submit"
+                  @click="form?.validate()"
+                >
+                  Salvar
+                </VBtn>
+              </VCol>
+            </VRow>
+          </VCardText>
+        </VForm>
       </VCard>
     </VCol>
   </VRow>
@@ -321,6 +321,6 @@ mountStock()
 
 <route lang="yaml">
 meta:
-  action: read
-  subject: Sales
+action: read
+subject: Sales
 </route>

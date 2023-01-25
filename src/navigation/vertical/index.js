@@ -8,14 +8,14 @@ export default [
   },
   {
     title: 'Produtos',
-    to: { name: 'products' },
+    to: { name: 'products-list' },
     icon: { icon: 'mdi-hanger' },
     action: 'read',
     subject: 'Sales',
   },
   {
     title: 'Vendas',
-    to: { name: 'sales' },
+    to: { name: 'sales-list' },
     icon: { icon: 'mdi-cart-variant' },
     action: 'read',
     subject: 'Sales',
