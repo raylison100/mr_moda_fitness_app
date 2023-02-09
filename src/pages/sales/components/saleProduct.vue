@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <script setup>
-import { productService } from "@/services/products/productService"
+import {productService} from "@/services/products/productService"
 
 const service = productService()
 
@@ -15,68 +15,58 @@ const props = defineProps({
   },
 })
 
+const product = ref()
+const stockCode = ref('')
+const maxStock = ref(1)
+
 const emit = defineEmits([
   'removeProduct',
   'totalAmount',
 ])
 
-watch(selectedItem, () => {
-  props.data.qtd = structuredClone(toRaw(selectedItem.value.qtd))
-  props.data.amount = structuredClone(toRaw(selectedItem.value.amount))
-  props.data.description = structuredClone(toRaw(selectedItem.value.description))
-  props.data.title = structuredClone(toRaw(selectedItem.value.title))
-})
+const clearSearchProduct = () => {
+  stockCode.value = ''
+}
+
+const findProduct = () => {
+  service.fetchProductCode(stockCode.value).then(response => {
+    if (response.status === 200) {
+      product.value = response.data.data
+      props.data.product_id = product.value.id
+      props.data.stock.qtd = 1
+      props.data.stock.code = stockCode.value
+      maxStock.value = (product.value.stocks.find(element => element.code = stockCode.value).qtd)
+    } else {
+      product.value = null
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
 
 const removeProduct = () => {
   emit('removeProduct', props.id)
 }
 
-const totalPrice = computed(() => Number(props.data.qtd) * Number(props.data.hours))
+const formatNumber = value => {
+  return parseFloat(value).toFixed(2);
+}
+
+const totalPrice = computed(() => {
+  props.data.total_itens = Number(props.data.stock.qtd) * Number(product.value?.final_value)
+  return formatNumber(props.data.total_itens)
+})
+
+const productPrice = computed(() => {
+  return formatNumber(product.value?.final_value)
+})
 
 watch(totalPrice, () => {
-  emit('totalAmount', totalPrice.value)
-}, { immediate: true })
+  emit('totalAmount')
+})
 </script>
 
 <template>
-  <!-- eslint-disable vue/no-mutating-props -->
-  <div class="add-products-header mb-2 d-none d-md-flex">
-    <VRow class="font-weight-medium px-4">
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <span class="text-sm">
-          Produto
-        </span>
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        <span class="text-sm">
-          Preço
-        </span>
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        <span class="text-sm">
-          Qtd
-        </span>
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        <span class="text-sm">
-          Tamanho
-        </span>
-      </VCol>
-    </VRow>
-  </div>
-
   <VCard
     flat
     border
@@ -89,45 +79,50 @@ watch(totalPrice, () => {
           cols="12"
           md="6"
         >
-          <VSelect
-            v-model="selectedItem"
-            :items="itemsOptions"
-            label="Select Item"
-            return-object
-            class="mb-3"
+          <VTextField
+            v-model="stockCode"
+            clearable
+            type="text"
+            label="Codigo de barras"
+            color="primary"
+            clear-icon="tabler-circle-x"
+            append-icon="mdi-magnify"
+            @click:append="findProduct"
+            @click:clear="clearSearchProduct"
           />
         </VCol>
+      </VRow>
+      <VRow v-if="product">
         <VCol
           cols="12"
-          md="2"
-          sm="4"
+          md="3"
         >
           <VTextField
-            v-model="props.data.cost"
+            v-model="productPrice"
             type="number"
-            label="Cost"
+            disabled
           />
         </VCol>
         <VCol
           cols="12"
           md="2"
-          sm="4"
         >
           <VTextField
-            v-model="props.data.hours"
+            v-model="props.data.stock.qtd"
             type="number"
-            label="Hours"
+            min="1"
+            :max="maxStock"
           />
         </VCol>
         <VCol
           cols="12"
-          md="2"
-          sm="4"
+          md="3"
         >
-          <p class="text-sm-center my-2">
-            <span class="d-inline d-md-none">Price: </span>
-            <span class="text-body-1">${{ totalPrice }}</span>
-          </p>
+          <VTextField
+            v-model="totalPrice"
+            type="number"
+            disabled
+          />
         </VCol>
       </VRow>
     </div>

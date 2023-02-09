@@ -321,6 +321,6 @@ mountStock()
 
 <route lang="yaml">
 meta:
-action: read
-subject: Sales
+  action: read
+  subject: Sales
 </route>

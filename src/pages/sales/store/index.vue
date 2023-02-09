@@ -4,7 +4,7 @@ import Editable from "@/pages/sales/components/editable.vue"
 const router = useRouter()
 
 const saleData = ref({
-  sale:{
+  sale: {
     id: null,
     amount: '',
     installment: '',
@@ -12,17 +12,17 @@ const saleData = ref({
     installment_value: '',
     cash_value: '',
     discount_value: '',
-    itens:[],
+    itens: [],
   },
 })
 </script>
 
 <template>
-  <VRow class="match-height">
+  <VRow>
     <VCol
       cols="12"
     >
-      <Editable :data="saleData" />
+      <Editable :data="saleData"/>
     </VCol>
   </VRow>
 </template>

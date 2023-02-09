@@ -42,5 +42,10 @@ export const productService = defineStore('ProductService', {
         headers: { 'Authorization': 'Bearer ' + token },
       })
     },
+    fetchProductCode(code) {
+      return axios.get(`/products/code/${code}`, {
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    },
   },
 })
