@@ -8,7 +8,7 @@ const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalProductus = ref(0)
+const totalSales = ref(0)
 const sales = ref([])
 const selectedRows = ref([])
 
@@ -20,7 +20,7 @@ watchEffect(() => {
   }).then(response => {
     sales.value = response.data.data
     totalPage.value = response.data.meta.pagination.total_pages
-    totalProductus.value = response.data.meta.pagination.total
+    totalSales.value = response.data.meta.pagination.total
   }).catch(error => {
     console.log(error)
   })
@@ -35,7 +35,7 @@ const paginationData = computed(() => {
   const firstIndex = sales.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = sales.value.length + (currentPage.value - 1) * rowPerPage.value
 
-  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProductus.value} entradas`
+  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalSales.value} entradas`
 })
 </script>
 
@@ -95,11 +95,7 @@ const paginationData = computed(() => {
               </th>
 
               <th scope="col">
-                MONTANTE
-              </th>
-
-              <th scope="col">
-                PRESTAÇÃO
+                PARCELAMENTO
               </th>
 
               <th scope="col">
@@ -107,7 +103,7 @@ const paginationData = computed(() => {
               </th>
 
               <th scope="col">
-                VALOR DA PARCELA
+                VALOR DA PARCELADO
               </th>
 
               <th scope="col">
@@ -116,6 +112,10 @@ const paginationData = computed(() => {
 
               <th scope="col">
                 VALOR DE DESCONTO
+              </th>
+
+              <th scope="col">
+                VALOR TOTAL
               </th>
 
               <th scope="col">
@@ -131,17 +131,13 @@ const paginationData = computed(() => {
               style="height: 3.75rem;"
             >
               <td>
-                <RouterLink :to="{ name: 'sales-show-id', params: { id: product.id } }">
+                <RouterLink :to="{ name: 'sales-show-id', params: { id: sale.id } }">
                   #{{ sale.id }}
                 </RouterLink>
               </td>
 
               <td>
-                {{ sale.amount }}
-              </td>
-
-              <td>
-                {{ sale.installment }}
+                {{ sale.installment ? 'sim' : 'NÃO' }}
               </td>
 
               <td>
@@ -159,6 +155,11 @@ const paginationData = computed(() => {
               <td>
                 R$ {{ sale.discount_value }}
               </td>
+
+              <td>
+                R$ {{ sale.amount }}
+              </td>
+
 
               <td style="width: 8rem;">
                 <VBtn
