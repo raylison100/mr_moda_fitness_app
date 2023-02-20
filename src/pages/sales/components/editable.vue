@@ -30,24 +30,21 @@ const onSubmit = () => {
 }
 
 const storeSale = () => {
+  const data = toRaw(props.data.sale)
 
-  const body = toRaw(props.data.sale)
-
-  console.log(body)
-
-  // if (props.data.sale.id !== null) {
-  //   service.updateSale(body, props.data.sale.id).then(() => {
-  //     router.back()
-  //   }).catch(err => {
-  //     console.log(err)
-  //   })
-  // } else {
-  //   service.storeSale(body).then(() => {
-  //     router.back()
-  //   }).catch(err => {
-  //     console.log(err)
-  //   })
-  // }
+  if (props.data.sale.id !== null) {
+    service.updateSale(data, props.data.sale.id).then(() => {
+      router.back()
+    }).catch(err => {
+      console.log(err)
+    })
+  } else {
+    service.storeSale(data).then(() => {
+      router.back()
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 }
 
 const addItem = () => {
@@ -124,13 +121,13 @@ init()
           <VCardText>
             <div class="sales-itens pr-4 mr-0">
               <div
-                v-for="(iten, index) in props.data.sale.itens"
+                v-for="(item, index) in props.data.sale.itens"
                 :key="index"
                 class="mb-5"
               >
                 <SaleProduct
                   :id="index"
-                  :data="iten"
+                  :data="item"
                   @remove-product="removeProduct"
                   @total-amount="amount"
                 />

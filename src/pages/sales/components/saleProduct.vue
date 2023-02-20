@@ -15,8 +15,6 @@ const props = defineProps({
   },
 })
 
-const product = ref()
-const stockCode = ref('')
 const maxStock = ref(1)
 
 const emit = defineEmits([
@@ -29,15 +27,13 @@ const clearSearchProduct = () => {
 }
 
 const findProduct = () => {
-  service.fetchProductCode(stockCode.value).then(response => {
+  service.fetchProductCode(props.data.stock.code).then(response => {
     if (response.status === 200) {
-      product.value = response.data.data
-      props.data.product_id = product.value.id
-      props.data.stock.qtd = 1
-      props.data.stock.code = stockCode.value
-      maxStock.value = (product.value.stocks.find(element => element.code = stockCode.value).qtd)
-    } else {
-      product.value = null
+      let product = response.data.data;
+
+      props.data.product = product
+      props.data.qtd = 1
+      maxStock.value = (product.stocks.find(element => element.code = props.data.stock.code).qtd)
     }
   }).catch(err => {
     console.log(err)
@@ -53,12 +49,12 @@ const formatNumber = value => {
 }
 
 const totalPrice = computed(() => {
-  props.data.total_itens = Number(props.data.stock.qtd) * Number(product.value?.final_value)
+  props.data.total_itens = Number(props.data.qtd) * Number(props.data.product?.final_value)
   return formatNumber(props.data.total_itens)
 })
 
 const productPrice = computed(() => {
-  return formatNumber(product.value?.final_value)
+  return formatNumber(props.data.product?.final_value)
 })
 
 watch(totalPrice, () => {
@@ -80,7 +76,7 @@ watch(totalPrice, () => {
           md="6"
         >
           <VTextField
-            v-model="stockCode"
+            v-model="props.data.stock.code"
             clearable
             type="text"
             label="Codigo de barras"
@@ -92,7 +88,7 @@ watch(totalPrice, () => {
           />
         </VCol>
       </VRow>
-      <VRow v-if="product">
+      <VRow v-if="props.data.product">
         <VCol
           cols="12"
           md="3"
@@ -108,7 +104,7 @@ watch(totalPrice, () => {
           md="2"
         >
           <VTextField
-            v-model="props.data.stock.qtd"
+            v-model="props.data.qtd"
             type="number"
             min="1"
             :max="maxStock"

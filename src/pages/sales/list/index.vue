@@ -1,5 +1,5 @@
 <script setup>
-import { saleService } from "@/services/sales/saleService"
+import {saleService} from "@/services/sales/saleService"
 
 const service = saleService()
 const router = useRouter()
@@ -17,6 +17,8 @@ watchEffect(() => {
     search: searchQuery.value,
     limit: rowPerPage.value,
     page: currentPage.value,
+    orderBy: 'id',
+    sortedBy: 'desc'
   }).then(response => {
     sales.value = response.data.data
     totalPage.value = response.data.meta.pagination.total_pages
@@ -70,7 +72,7 @@ const paginationData = computed(() => {
               Nova Venda
             </VBtn>
           </div>
-          <VSpacer />
+          <VSpacer/>
 
           <div class="d-flex align-center flex-wrap gap-4">
             <!-- 👉 Search  -->
@@ -84,115 +86,115 @@ const paginationData = computed(() => {
           </div>
         </VCardText>
 
-        <VDivider />
+        <VDivider/>
         <!-- SECTION Table -->
         <VTable class="text-no-wrap invoice-list-table">
           <!-- 👉 Table head -->
           <thead class="text-uppercase">
-            <tr>
-              <th scope="col">
-                #ID
-              </th>
+          <tr>
+            <th scope="col">
+              #ID
+            </th>
 
-              <th scope="col">
-                PARCELAMENTO
-              </th>
+            <th scope="col">
+              PARCELAMENTO
+            </th>
 
-              <th scope="col">
-                PARCELA QTD
-              </th>
+            <th scope="col">
+              PARCELA QTD
+            </th>
 
-              <th scope="col">
-                VALOR DA PARCELADO
-              </th>
+            <th scope="col">
+              VALOR DA PARCELADO
+            </th>
 
-              <th scope="col">
-                VALOR EM DINHEIRO
-              </th>
+            <th scope="col">
+              VALOR EM DINHEIRO
+            </th>
 
-              <th scope="col">
-                VALOR DE DESCONTO
-              </th>
+            <th scope="col">
+              VALOR DE DESCONTO
+            </th>
 
-              <th scope="col">
-                VALOR TOTAL
-              </th>
+            <th scope="col">
+              VALOR TOTAL
+            </th>
 
-              <th scope="col">
-                AÇÕES
-              </th>
-            </tr>
+            <th scope="col">
+              AÇÕES
+            </th>
+          </tr>
           </thead>
           <!-- 👉 Table Body -->
           <tbody>
-            <tr
-              v-for="sale in sales"
-              :key="sale.id"
-              style="height: 3.75rem;"
-            >
-              <td>
-                <RouterLink :to="{ name: 'sales-show-id', params: { id: sale.id } }">
-                  #{{ sale.id }}
-                </RouterLink>
-              </td>
+          <tr
+            v-for="sale in sales"
+            :key="sale.id"
+            style="height: 3.75rem;"
+          >
+            <td>
+              <RouterLink :to="{ name: 'sales-show-id', params: { id: sale.id } }">
+                #{{ sale.id }}
+              </RouterLink>
+            </td>
 
-              <td>
-                {{ sale.installment ? 'sim' : 'NÃO' }}
-              </td>
+            <td>
+              {{ sale.installment ? 'SIM' : 'NÃO' }}
+            </td>
 
-              <td>
-                {{ sale.installment_qtd }}
-              </td>
+            <td>
+              {{ sale.installment_qtd }}
+            </td>
 
-              <td>
-                R$ {{ sale.installment_value }}
-              </td>
+            <td>
+              R$ {{ sale.installment_value }}
+            </td>
 
-              <td>
-                R$ {{ sale.cash_value }}
-              </td>
+            <td>
+              R$ {{ sale.cash_value }}
+            </td>
 
-              <td>
-                R$ {{ sale.discount_value }}
-              </td>
+            <td>
+              R$ {{ sale.discount_value }}
+            </td>
 
-              <td>
-                R$ {{ sale.amount }}
-              </td>
-
-
-              <td style="width: 8rem;">
-                <VBtn
-                  icon
-                  variant="text"
-                  color="default"
-                  size="x-small"
-                  :to="{ name: 'products-edit-id', params: { id: sale.id } }"
-                >
-                  <VIcon
-                    :size="22"
-                    icon="tabler-pencil"
-                  />
-                </VBtn>
-              </td>
+            <td>
+              R$ {{ sale.amount }}
+            </td>
 
 
-            </tr>
+            <td style="width: 8rem;">
+              <VBtn
+                icon
+                variant="text"
+                color="default"
+                size="x-small"
+                :to="{ name: 'sales-edit-id', params: { id: sale.id } }"
+              >
+                <VIcon
+                  :size="22"
+                  icon="tabler-pencil"
+                />
+              </VBtn>
+            </td>
+
+
+          </tr>
           </tbody>
           <!-- 👉 table footer  -->
           <tfoot v-show="!sales.length">
-            <tr>
-              <td
-                colspan="8"
-                class="text-center text-body-1"
-              >
-                No data available
-              </td>
-            </tr>
+          <tr>
+            <td
+              colspan="8"
+              class="text-center text-body-1"
+            >
+              No data available
+            </td>
+          </tr>
           </tfoot>
         </VTable>
         <!-- !SECTION -->
-        <VDivider />
+        <VDivider/>
 
         <!-- SECTION Pagination -->
         <VCardText class="d-flex align-center flex-wrap gap-4 py-3">
@@ -200,7 +202,7 @@ const paginationData = computed(() => {
           <span class="text-sm text-disabled">
             {{ paginationData }}
           </span>
-          <VSpacer />
+          <VSpacer/>
 
           <!-- 👉 Pagination -->
           <VPagination
@@ -219,13 +221,14 @@ const paginationData = computed(() => {
 </template>
 
 <style lang="scss">
-  .table-search-filter {
-    inline-size: 12rem;
-  }
+.table-search-filter {
+  inline-size: 12rem;
+}
 </style>
 
 <route lang="yaml">
-meta:
-  action: read
-  subject: Sales
+  meta:
+    action: read
+    subject: Sales
 </route>
+

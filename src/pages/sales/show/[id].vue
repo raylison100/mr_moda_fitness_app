@@ -1,44 +1,33 @@
 <script setup>
-import {productService} from "@/services/products/productService"
+import {saleService} from "@/services/sales/saleService"
 
 const route = useRoute()
-const service = productService()
+const service = saleService()
 
-const productData = ref()
+const saleData = ref()
 
-service.fetchProductId(Number(route.params.id)).then(response => {
-  productData.value = {
+service.fetchSaleId(Number(route.params.id)).then(response => {
+  saleData.value = {
     id: response.data.data.id,
-    name: response.data.data.name,
-    purchase_price: response.data.data.purchase_price,
-    percentage_on_sale: response.data.data.percentage_on_sale,
-    final_value: response.data.data.final_value,
-    product_type: response.data.data.product_type,
-    stocks: response.data.data.stocks,
-    departament: {
-      id: response.data.data.departament.id,
-      name: response.data.data.departament.name,
-    },
-    category: {
-      id: response.data.data.category.id,
-      name: response.data.data.category.name,
-    },
-    sub_category: {
-      id: response.data.data.sub_category.id,
-      name: response.data.data.sub_category.name,
-    },
+    amount: response.data.data.amount,
+    installment: response.data.data.installment,
+    installment_qtd: response.data.data.installment_qtd,
+    installment_value: response.data.data.installment_value,
+    cash_value: response.data.data.cash_value,
+    discount_value: response.data.data.discount_value,
+    itens: response.data.data.itens,
   }
 
 }).catch(err => {
   console.log(err)
-  router.push('/products/list')
+  router.push('/sales/list')
 })
 </script>
 
 <template>
   <VRow class="match-height">
     <VCol
-      v-if="productData?.id"
+      v-if="saleData?.id"
       cols="12"
     >
       <VCard>
@@ -46,77 +35,13 @@ service.fetchProductId(Number(route.params.id)).then(response => {
           <VRow>
             <VCol
               cols="12"
-              md="3"
-            >
-              <h6 class="text-sm font-weight-semibold mb-3">
-                Nome
-              </h6>
-              <p class="mb-1">
-                {{ productData.name }}
-              </p>
-            </VCol>
-
-            <VCol
-              cols="12"
-              md="1"
-            >
-              <h6 class="text-sm font-weight-semibold mb-3">
-                Tipo
-              </h6>
-              <p class="mb-1">
-                {{ productData.product_type }}
-              </p>
-            </VCol>
-
-            <VCol
-              cols="12"
-              md="2"
-            >
-              <h6 class="text-sm font-weight-semibold mb-3">
-                Preço de venda
-              </h6>
-              <p class="mb-1">
-                {{ productData.purchase_price }}
-              </p>
-            </VCol>
-
-            <VCol
-              cols="12"
-              md="2"
-            >
-              <h6 class="text-sm font-weight-semibold mb-3">
-                Percentual na venda
-              </h6>
-              <p class="mb-1">
-                {{ productData.percentage_on_sale }}
-              </p>
-            </VCol>
-
-            <VCol
-              cols="12"
-              md="2"
-            >
-              <h6 class="text-sm font-weight-semibold mb-3">
-                Valor Final
-              </h6>
-              <p class="mb-1">
-                {{ productData.final_value }}
-              </p>
-            </VCol>
-          </VRow>
-          <br>
-          <VDivider/>
-          <br>
-          <VRow>
-            <VCol
-              cols="12"
               md="4"
             >
               <h6 class="text-sm font-weight-semibold mb-3">
-                Departamento
+                Parcelamento
               </h6>
               <p class="mb-1">
-                {{ productData.departament.name }}
+                {{ saleData.installment ? 'SIM' : 'NÃO' }}
               </p>
             </VCol>
 
@@ -125,10 +50,10 @@ service.fetchProductId(Number(route.params.id)).then(response => {
               md="4"
             >
               <h6 class="text-sm font-weight-semibold mb-3">
-                Categoria
+                Qtd parcelas
               </h6>
               <p class="mb-1">
-                {{ productData.category.name }}
+                {{ saleData.installment_qtd }}
               </p>
             </VCol>
 
@@ -137,10 +62,46 @@ service.fetchProductId(Number(route.params.id)).then(response => {
               md="4"
             >
               <h6 class="text-sm font-weight-semibold mb-3">
-                Sub Categoria
+                Valor Parcelado
               </h6>
               <p class="mb-1">
-                {{ productData.sub_category.name }}
+                {{ saleData.installment_value }}
+              </p>
+            </VCol>
+
+            <VCol
+              cols="12"
+              md="4"
+            >
+              <h6 class="text-sm font-weight-semibold mb-3">
+                Valor A Vista
+              </h6>
+              <p class="mb-1">
+                {{ saleData.cash_value }}
+              </p>
+            </VCol>
+
+            <VCol
+              cols="12"
+              md="4"
+            >
+              <h6 class="text-sm font-weight-semibold mb-3">
+                Desconto
+              </h6>
+              <p class="mb-1">
+                {{ saleData.discount_value }}
+              </p>
+            </VCol>
+
+            <VCol
+              cols="12"
+              md="4"
+            >
+              <h6 class="text-sm font-weight-semibold mb-3">
+                Valor Total
+              </h6>
+              <p class="mb-1">
+                {{ saleData.amount }}
               </p>
             </VCol>
           </VRow>
@@ -148,31 +109,46 @@ service.fetchProductId(Number(route.params.id)).then(response => {
           <VDivider/>
           <br>
           <h4>
-            Tamanhos
+            Produtos
           </h4>
           <br>
           <VRow>
-            <VCol cols="4"  v-for="(item, index) in productData.stocks">
+            <VCol cols="4" v-for="(item, index) in saleData.itens">
               <VRow no-gutters>
-                <VCol
-                  cols="12"
-                  md="2"
-                >
-                  <h6 class="text-sm font-weight-semibold mb-3">
-                    {{ item.size }}
-                  </h6>
-                </VCol>
-
                 <VCol
                   cols="12"
                   md="4"
                 >
-                  <VChip class="mb-1"
-                    :color="productData.stocks[index].qtd === 0 ? 'error' : 'primary'"
-                    variant="elevated"
-                  >
-                    {{ productData.stocks[index].qtd }}
-                  </VChip>
+                  <h6 class="text-sm font-weight-semibold mb-3">
+                    produto
+                  </h6>
+                  <p class="mb-1">
+                    {{ item.product.name }}
+                  </p>
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="3"
+                >
+                  <h6 class="text-sm font-weight-semibold mb-3">
+                    qtd
+                  </h6>
+                  <p class="mb-1">
+                    {{ item.qtd }}
+                  </p>
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  md="3"
+                >
+                  <h6 class="text-sm font-weight-semibold mb-3">
+                    TOTAL
+                  </h6>
+                  <p class="mb-1">
+                    {{ item.amount }}
+                  </p>
                 </VCol>
               </VRow>
             </VCol>
@@ -185,7 +161,7 @@ service.fetchProductId(Number(route.params.id)).then(response => {
 </template>
 
 <route lang="yaml">
-meta:
-  action: read
-  subject: Sales
+  meta:
+    action: read
+    subject: Sales
 </route>
