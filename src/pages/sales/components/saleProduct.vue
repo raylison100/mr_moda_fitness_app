@@ -26,14 +26,24 @@ const clearSearchProduct = () => {
   stockCode.value = ''
 }
 
+
+const init = () => {
+  findProduct();
+}
+
 const findProduct = () => {
   service.fetchProductCode(props.data.stock.code).then(response => {
     if (response.status === 200) {
       let product = response.data.data;
 
       props.data.product = product
-      props.data.qtd = 1
-      maxStock.value = (product.stocks.find(element => element.code = props.data.stock.code).qtd)
+      maxStock.value = (product.stocks.find(element => element.code === props.data.stock.code).qtd)
+
+      if (props.data.product.id == null) {
+        props.data.qtd = 1
+      }else{
+        maxStock.value = maxStock.value + props.data.qtd;
+      }
     }
   }).catch(err => {
     console.log(err)
@@ -60,6 +70,8 @@ const productPrice = computed(() => {
 watch(totalPrice, () => {
   emit('totalAmount')
 })
+
+init()
 </script>
 
 <template>
