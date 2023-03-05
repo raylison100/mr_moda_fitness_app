@@ -174,8 +174,6 @@ const paginationData = computed(() => {
                   />
                 </VBtn>
               </td>
-
-
             </tr>
           </tbody>
           <!-- 👉 table footer  -->
@@ -218,9 +216,9 @@ const paginationData = computed(() => {
 </template>
 
 <style lang="scss">
-  .table-search-filter {
-    inline-size: 12rem;
-  }
+.table-search-filter {
+  inline-size: 12rem;
+}
 </style>
 
 <route lang="yaml">

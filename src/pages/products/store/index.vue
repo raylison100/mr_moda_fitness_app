@@ -4,25 +4,25 @@ import Editable from "@/pages/products/components/editable.vue"
 const router = useRouter()
 
 const productData = ref({
-  product:{
+  product: {
     id: null,
     name: '',
     purchase_price: '',
     percentage_on_sale: '',
     final_value: '',
     product_type: '',
-    stocks:[],
+    stocks: [],
     departament: {
       id: '',
-      name :'',
+      name: '',
     },
     category: {
       id: '',
-      name :'',
+      name: '',
     },
     sub_category: {
       id: '',
-      name :'',
+      name: '',
     },
   },
 })

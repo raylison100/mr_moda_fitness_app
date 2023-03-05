@@ -22,7 +22,7 @@ const saleData = ref({
     <VCol
       cols="12"
     >
-      <Editable :data="saleData"/>
+      <Editable :data="saleData" />
     </VCol>
   </VRow>
 </template>

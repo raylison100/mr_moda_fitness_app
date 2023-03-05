@@ -20,8 +20,8 @@ export const saleService = defineStore('SaleService', {
         headers: { 'Authorization': 'Bearer ' + token },
       })
     },
-    updateSale(body, id) {
-      return axios.put(`/sales/${id}`, body, {
+    canceledSale(id) {
+      return axios.put(`/sales/cancellation/${id}`, {}, {
         headers: { 'Authorization': 'Bearer ' + token },
       })
     },

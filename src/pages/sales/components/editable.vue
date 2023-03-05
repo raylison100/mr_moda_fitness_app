@@ -1,6 +1,6 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import {saleService} from "@/services/sales/saleService"
+import { saleService } from "@/services/sales/saleService"
 import SaleProduct from "@/pages/sales/components/saleProduct.vue"
 
 const props = defineProps({
@@ -17,7 +17,7 @@ const form = ref()
 
 const init = () => {
   if (props.data.sale.id == null) {
-    props.data.sale.amount = 0;
+    props.data.sale.amount = 0
   }
 }
 
@@ -29,16 +29,20 @@ const onSubmit = () => {
   })
 }
 
-const storeSale = () => {
-  const data = toRaw(props.data.sale)
-
-  if (props.data.sale.id !== null) {
-    service.updateSale(data, props.data.sale.id).then(() => {
+const onCanceled = () => {
+  if (props.data.sale.id != null) {
+    service.canceledSale(props.data.sale.id).then(() => {
       router.back()
     }).catch(err => {
       console.log(err)
     })
-  } else {
+  }
+}
+
+const storeSale = () => {
+  const data = toRaw(props.data.sale)
+
+  if (props.data.sale.id == null) {
     service.storeSale(data).then(() => {
       router.back()
     }).catch(err => {
@@ -49,11 +53,11 @@ const storeSale = () => {
 
 const addItem = () => {
   props.data.sale.itens.push({
-    product_id: null,
+    is_it_a_new_item: true,
     total_itens: 0,
     stock: {
       qtd: 1,
-      code: null
+      code: null,
     },
   })
 }
@@ -65,16 +69,22 @@ const removeProduct = index => {
 
 const amount = () => {
   props.data.sale.amount = 0
-  props.data.sale.itens.forEach(element => props.data.sale.amount += Number(element.total_itens));
+  props.data.sale.itens.forEach(element => props.data.sale.amount += Number(element.total_itens))
+  props.data.sale.installment = false
 }
 
 const formatNumber = value => {
-  return parseFloat(value).toFixed(2);
+  return parseFloat(value).toFixed(2)
 }
 
 const canSave = computed(() => {
-  return !(props.data.sale.itens.length > 0);
+  return !(props.data.sale.itens.length > 0 && props.data.sale.id == null)
 })
+
+const canCanceled = computed(() => {
+  return !(props.data.sale.id != null)
+})
+
 
 const formatAmount = computed(() => {
   return formatNumber(props.data.sale.amount)
@@ -113,6 +123,7 @@ init()
         <VForm
           ref="form"
           lazy-validation
+          :disabled="!canCanceled"
           @submit.prevent="onSubmit"
         >
           <VCardItem>
@@ -135,13 +146,16 @@ init()
             </div>
 
             <div class="mt-4 ma-sm-4">
-              <VBtn @click="addItem">
+              <VBtn
+                :disabled="!canCanceled"
+                @click="addItem"
+              >
                 Adicionar Produto
               </VBtn>
             </div>
           </VCardText>
           <br>
-          <VDivider/>
+          <VDivider />
           <br>
           <VCardText>
             <VRow>
@@ -239,13 +253,26 @@ init()
           </div>
 
           <VBtn
+            v-if="props.data.sale.id == null"
             block
             type="submit"
             class="mb-2"
-            @click="onSubmit"
             :disabled="canSave"
+            @click="onSubmit"
           >
             Salvar
+          </VBtn>
+
+          <VBtn
+            v-if="props.data.sale.id != null"
+            block
+            type="submit"
+            class="mb-2"
+            color="secondary"
+            :disabled="canCanceled"
+            @click="onCanceled"
+          >
+            Cancelar
           </VBtn>
         </VCardText>
       </VCard>
@@ -258,5 +285,4 @@ init()
   max-height: 20em;
   overflow-y: auto;
 }
-
 </style>

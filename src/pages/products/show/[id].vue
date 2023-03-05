@@ -1,5 +1,5 @@
 <script setup>
-import {productService} from "@/services/products/productService"
+import { productService } from "@/services/products/productService"
 
 const route = useRoute()
 const service = productService()
@@ -105,7 +105,7 @@ service.fetchProductId(Number(route.params.id)).then(response => {
             </VCol>
           </VRow>
           <br>
-          <VDivider/>
+          <VDivider />
           <br>
           <VRow>
             <VCol
@@ -145,14 +145,18 @@ service.fetchProductId(Number(route.params.id)).then(response => {
             </VCol>
           </VRow>
           <br>
-          <VDivider/>
+          <VDivider />
           <br>
           <h4>
             Tamanhos
           </h4>
           <br>
           <VRow>
-            <VCol cols="4"  v-for="(item, index) in productData.stocks">
+            <VCol
+              v-for="(item, index) in productData.stocks"
+              v-bind="index"
+              cols="4"
+            >
               <VRow no-gutters>
                 <VCol
                   cols="12"
@@ -167,7 +171,8 @@ service.fetchProductId(Number(route.params.id)).then(response => {
                   cols="12"
                   md="4"
                 >
-                  <VChip class="mb-1"
+                  <VChip
+                    class="mb-1"
                     :color="productData.stocks[index].qtd === 0 ? 'error' : 'primary'"
                     variant="elevated"
                   >

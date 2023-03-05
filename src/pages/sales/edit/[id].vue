@@ -1,7 +1,7 @@
 <script setup>
 import Editable from "@/pages/sales/components/editable.vue"
 
-import {saleService} from "@/services/sales/saleService"
+import { saleService } from "@/services/sales/saleService"
 
 const route = useRoute()
 const router = useRouter()
@@ -12,7 +12,7 @@ const saleData = ref()
 
 service.fetchSaleId(Number(route.params.id)).then(response => {
   saleData.value = {
-    sale : {
+    sale: {
       id: response.data.data.id,
       amount: response.data.data.amount,
       installment: response.data.data.installment,
@@ -21,7 +21,7 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
       cash_value: response.data.data.cash_value,
       discount_value: response.data.data.discount_value,
       itens: response.data.data.itens,
-    }
+    },
   }
 }).catch(err => {
   console.log(err)
@@ -35,7 +35,7 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
       v-if="saleData?.sale"
       cols="12"
     >
-      <Editable :data="saleData"/>
+      <Editable :data="saleData" />
     </VCol>
   </VRow>
 </template>

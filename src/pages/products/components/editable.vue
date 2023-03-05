@@ -1,7 +1,7 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import {requiredValidator} from '@validators'
-import {productService} from "@/services/products/productService"
+import { requiredValidator } from '@validators'
+import { productService } from "@/services/products/productService"
 
 const props = defineProps({
   data: {
@@ -79,9 +79,9 @@ const mountStock = () => {
     size_items.forEach(element => {
       props.data.product.stocks.push({
         size: element,
-        qtd: 0
+        qtd: 0,
       })
-    });
+    })
   }
 }
 
@@ -103,7 +103,7 @@ const storeProduct = () => {
     product_type: props.data.product.product_type,
     size: props.data.product.size,
     qtd: props.data.product.qtd,
-    stock: props.data.product.stocks
+    stock: props.data.product.stocks,
   }
 
   if (props.data.product.id !== null) {
@@ -175,7 +175,7 @@ mountStock()
                 <VTextField
                   v-model="props.data.product.purchase_price"
                   :rules="[requiredValidator]"
-                  label="Preço de venda"
+                  label="Preço de compra"
                   prefix="$"
                   type="number"
                   min="0"
@@ -267,7 +267,7 @@ mountStock()
             </VRow>
           </VCardText>
           <br>
-          <VDivider/>
+          <VDivider />
           <br>
           <VCardText>
             <h4>
@@ -275,7 +275,11 @@ mountStock()
             </h4>
             <br>
             <VRow>
-              <VCol cols="4" v-for="(item, index) in props.data.product.stocks">
+              <VCol
+                v-for="(item, index) in props.data.product.stocks"
+                v-bind="index"
+                cols="4"
+              >
                 <VRow no-gutters>
                   <VCol
                     cols="12"

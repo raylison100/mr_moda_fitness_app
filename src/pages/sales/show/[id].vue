@@ -1,5 +1,5 @@
 <script setup>
-import {saleService} from "@/services/sales/saleService"
+import { saleService } from "@/services/sales/saleService"
 
 const route = useRoute()
 const service = saleService()
@@ -106,14 +106,18 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
             </VCol>
           </VRow>
           <br>
-          <VDivider/>
+          <VDivider />
           <br>
           <h4>
             Produtos
           </h4>
           <br>
           <VRow>
-            <VCol cols="4" v-for="(item, index) in saleData.itens">
+            <VCol
+              v-for="(item, index) in saleData.itens"
+              v-bind="index"
+              cols="4"
+            >
               <VRow no-gutters>
                 <VCol
                   cols="12"
@@ -161,7 +165,7 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
 </template>
 
 <route lang="yaml">
-  meta:
-    action: read
-    subject: Sales
+meta:
+  action: read
+  subject: Sales
 </route>
