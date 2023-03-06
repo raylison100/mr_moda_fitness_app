@@ -20,5 +20,13 @@ export default [
     action: 'read',
     subject: 'Sales',
   },
+
+  {
+    title: 'Gastos',
+    to: { name: 'spendings-list' },
+    icon: { icon: 'mdi-hand-coin' },
+    action: 'read',
+    subject: 'Auth',
+  },
 ]
 
