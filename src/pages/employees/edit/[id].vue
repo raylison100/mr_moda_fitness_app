@@ -1,7 +1,7 @@
 <script setup>
 import Editable from "@/pages/products/components/editable.vue"
 
-import { productService } from "@/services/product/productService"
+import { productService } from "@/services/products/productService"
 
 const route = useRoute()
 const router = useRouter()
@@ -20,9 +20,9 @@ service.fetchProductId(Number(route.params.id)).then(response => {
       final_value: response.data.data.final_value,
       product_type: response.data.data.product_type,
       stocks: response.data.data.stocks,
-      department: {
-        id: response.data.data.department.id,
-        name: response.data.data.department.name,
+      departament: {
+        id: response.data.data.departament.id,
+        name: response.data.data.departament.name,
       },
       category: {
         id: response.data.data.category.id,

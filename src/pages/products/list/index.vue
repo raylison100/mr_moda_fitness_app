@@ -1,5 +1,5 @@
 <script setup>
-import { productService } from "@/services/products/productService"
+import { productService } from "@/services/product/productService"
 
 const service = productService()
 const router = useRouter()
@@ -8,7 +8,7 @@ const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalProductus = ref(0)
+const totalProducts = ref(0)
 const products = ref([])
 const selectedRows = ref([])
 
@@ -20,7 +20,7 @@ watchEffect(() => {
   }).then(response => {
     products.value = response.data.data
     totalPage.value = response.data.meta.pagination.total_pages
-    totalProductus.value = response.data.meta.pagination.total
+    totalProducts.value = response.data.meta.pagination.total
   }).catch(error => {
     console.log(error)
   })
@@ -35,7 +35,7 @@ const paginationData = computed(() => {
   const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
   const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
 
-  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProductus.value} entradas`
+  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProducts.value} entradas`
 })
 </script>
 
@@ -149,7 +149,7 @@ const paginationData = computed(() => {
               </td>
 
               <td>
-                {{ product.departament.name }}
+                {{ product.department.name }}
               </td>
 
               <td>

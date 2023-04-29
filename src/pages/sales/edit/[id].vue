@@ -1,7 +1,7 @@
 <script setup>
 import Editable from "@/pages/sales/components/editable.vue"
 
-import { saleService } from "@/services/sales/saleService"
+import { saleService } from "@/services/sale/saleService"
 
 const route = useRoute()
 const router = useRouter()

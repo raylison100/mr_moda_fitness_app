@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <script setup>
-import { productService } from "@/services/products/productService"
+import { productService } from "@/services/product/productService"
 
 const props = defineProps({
   id: {
@@ -21,11 +21,6 @@ const emit = defineEmits([
 const service = productService()
 
 const maxStock = ref(1)
-
-const clearSearchProduct = () => {
-  stockCode.value = ''
-}
-
 
 const init = () => {
   findProduct()
@@ -60,7 +55,7 @@ const formatNumber = value => {
 
 const totalPrice = computed(() => {
   props.data.total_itens = Number(props.data.qtd) * Number(props.data.product?.final_value)
-  
+
   return formatNumber(props.data.total_itens)
 })
 
@@ -98,7 +93,6 @@ init()
             append-icon="mdi-magnify"
             :disabled="!props.data.is_it_a_new_item"
             @click:append="findProduct"
-            @click:clear="clearSearchProduct"
           />
         </VCol>
       </VRow>

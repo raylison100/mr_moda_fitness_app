@@ -1,28 +1,26 @@
 <script setup>
-import { saleService } from "@/services/sale/saleService"
+import { productService } from "@/services/products/productService"
 
-const service = saleService()
+const service = productService()
 const router = useRouter()
 
 const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalSales = ref(0)
-const sales = ref([])
+const totalProductus = ref(0)
+const products = ref([])
 const selectedRows = ref([])
 
 watchEffect(() => {
-  service.fetchSales({
+  service.fetchProducts({
     search: searchQuery.value,
     limit: rowPerPage.value,
     page: currentPage.value,
-    orderBy: 'id',
-    sortedBy: 'desc',
   }).then(response => {
-    sales.value = response.data.data
+    products.value = response.data.data
     totalPage.value = response.data.meta.pagination.total_pages
-    totalSales.value = response.data.meta.pagination.total
+    totalProductus.value = response.data.meta.pagination.total
   }).catch(error => {
     console.log(error)
   })
@@ -34,10 +32,10 @@ watchEffect(() => {
 })
 
 const paginationData = computed(() => {
-  const firstIndex = sales.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = sales.value.length + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = products.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = products.value.length + (currentPage.value - 1) * rowPerPage.value
 
-  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalSales.value} entradas`
+  return `Mostrando ${firstIndex} a ${lastIndex} de ${totalProductus.value} entradas`
 })
 </script>
 
@@ -47,7 +45,7 @@ const paginationData = computed(() => {
       cols="12"
     >
       <VCard
-        v-if="sales"
+        v-if="products"
       >
         <VCardText class="d-flex align-center flex-wrap gap-4">
           <!-- 👉 Rows per page -->
@@ -67,9 +65,9 @@ const paginationData = computed(() => {
             <!-- 👉 Create Products -->
             <VBtn
               prepend-icon="tabler-plus"
-              :to="{ name: 'sales-store' }"
+              :to="{ name: 'products-store' }"
             >
-              Nova Venda
+              Novo Produto
             </VBtn>
           </div>
           <VSpacer />
@@ -79,7 +77,7 @@ const paginationData = computed(() => {
             <div class="table-search-filter">
               <VTextField
                 v-model="searchQuery"
-                placeholder="Buscar Venda"
+                placeholder="Buscar Produto"
                 density="compact"
               />
             </div>
@@ -97,31 +95,27 @@ const paginationData = computed(() => {
               </th>
 
               <th scope="col">
-                STATUS
+                NOME
               </th>
 
               <th scope="col">
-                PARCELAMENTO
+                PREÇO
               </th>
 
               <th scope="col">
-                PARCELA QTD
+                TIPO
               </th>
 
               <th scope="col">
-                VALOR DA PARCELADO
+                DEPARTAMENTO
               </th>
 
               <th scope="col">
-                VALOR EM DINHEIRO
+                CATEGORIA
               </th>
 
               <th scope="col">
-                VALOR DE DESCONTO
-              </th>
-
-              <th scope="col">
-                VALOR TOTAL
+                SUB CATEGORIA
               </th>
 
               <th scope="col">
@@ -132,50 +126,39 @@ const paginationData = computed(() => {
           <!-- 👉 Table Body -->
           <tbody>
             <tr
-              v-for="sale in sales"
-              :key="sale.id"
+              v-for="product in products"
+              :key="product.id"
               style="height: 3.75rem;"
             >
               <td>
-                <RouterLink :to="{ name: 'sales-show-id', params: { id: sale.id } }">
-                  #{{ sale.id }}
+                <RouterLink :to="{ name: 'products-show-id', params: { id: product.id } }">
+                  #{{ product.id }}
                 </RouterLink>
               </td>
 
               <td>
-                <VChip
-                  class="mb-1"
-                  :color="sale.status === 'CANCELED' ? 'error' : 'primary'"
-                  variant="elevated"
-                >
-                  {{ sale.status }}
-                </VChip>
+                {{ product.name }}
               </td>
 
               <td>
-                {{ sale.installment ? 'SIM' : 'NÃO' }}
+                R$ {{ product.final_value }}
               </td>
 
               <td>
-                {{ sale.installment_qtd }}
+                {{ product.product_type }}
               </td>
 
               <td>
-                R$ {{ sale.installment_value }}
+                {{ product.departament.name }}
               </td>
 
               <td>
-                R$ {{ sale.cash_value }}
+                {{ product.category.name }}
               </td>
 
               <td>
-                R$ {{ sale.discount_value }}
+                {{ product.sub_category.name }}
               </td>
-
-              <td>
-                R$ {{ sale.amount }}
-              </td>
-
 
               <td style="width: 8rem;">
                 <VBtn
@@ -183,8 +166,7 @@ const paginationData = computed(() => {
                   variant="text"
                   color="default"
                   size="x-small"
-                  :disabled="sale.status === 'CANCELED'"
-                  :to="{ name: 'sales-edit-id', params: { id: sale.id } }"
+                  :to="{ name: 'products-edit-id', params: { id: product.id } }"
                 >
                   <VIcon
                     :size="22"
@@ -195,7 +177,7 @@ const paginationData = computed(() => {
             </tr>
           </tbody>
           <!-- 👉 table footer  -->
-          <tfoot v-show="!sales.length">
+          <tfoot v-show="!products.length">
             <tr>
               <td
                 colspan="8"
@@ -244,4 +226,3 @@ meta:
   action: read
   subject: Sales
 </route>
-

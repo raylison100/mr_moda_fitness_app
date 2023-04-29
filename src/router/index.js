@@ -9,7 +9,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: () => ({ name: 'dashboards-analytics' }),
+      redirect: () => ({ name: 'sales-list' }),
     },
     ...setupLayouts(routes),
   ],

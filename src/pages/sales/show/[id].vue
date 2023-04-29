@@ -1,5 +1,5 @@
 <script setup>
-import { saleService } from "@/services/sales/saleService"
+import { saleService } from "@/services/sale/saleService"
 
 const route = useRoute()
 const service = saleService()

@@ -1,6 +1,6 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import { saleService } from "@/services/sales/saleService"
+import { saleService } from "@/services/sale/saleService"
 import SaleProduct from "@/pages/sales/components/saleProduct.vue"
 
 const props = defineProps({
@@ -52,9 +52,9 @@ const storeSale = () => {
 }
 
 const addItem = () => {
-  props.data.sale.itens.push({
+  props.data.sale.items.push({
     is_it_a_new_item: true,
-    total_itens: 0,
+    total_items: 0,
     stock: {
       qtd: 1,
       code: null,
@@ -63,13 +63,13 @@ const addItem = () => {
 }
 
 const removeProduct = index => {
-  props.data.sale.itens.splice(index, 1)
+  props.data.sale.items.splice(index, 1)
   amount()
 }
 
 const amount = () => {
   props.data.sale.amount = 0
-  props.data.sale.itens.forEach(element => props.data.sale.amount += Number(element.total_itens))
+  props.data.sale.items.forEach(element => props.data.sale.amount += Number(element.total_itens))
   props.data.sale.installment = false
 }
 
@@ -78,7 +78,7 @@ const formatNumber = value => {
 }
 
 const canSave = computed(() => {
-  return !(props.data.sale.itens.length > 0 && props.data.sale.id == null)
+  return !(props.data.sale.items.length > 0 && props.data.sale.id == null)
 })
 
 const canCanceled = computed(() => {
@@ -130,9 +130,9 @@ init()
             <VCardTitle>{{ props.data.sale.id ? 'Editar ' : 'Nova ' }} Venda</VCardTitle>
           </VCardItem>
           <VCardText>
-            <div class="sales-itens pr-4 mr-0">
+            <div class="sales-items pr-4 mr-0">
               <div
-                v-for="(item, index) in props.data.sale.itens"
+                v-for="(item, index) in props.data.sale.items"
                 :key="index"
                 class="mb-5"
               >
@@ -281,7 +281,7 @@ init()
 </template>
 
 <style>
-.sales-itens {
+.sales-items {
   max-height: 20em;
   overflow-y: auto;
 }

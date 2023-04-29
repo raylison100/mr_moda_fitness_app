@@ -1,7 +1,7 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import {requiredValidator} from '@validators'
-import {spendingService} from "@/services/spendings/spendingService"
+import { requiredValidator } from '@validators'
+import { spendingService } from "@/services/spending/spendingService"
 
 const props = defineProps({
   data: {

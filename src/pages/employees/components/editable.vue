@@ -1,7 +1,7 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
 import { requiredValidator } from '@validators'
-import { productService } from "@/services/product/productService"
+import { productService } from "@/services/products/productService"
 
 const props = defineProps({
   data: {
@@ -13,7 +13,7 @@ const props = defineProps({
 const router = useRouter()
 const form = ref()
 
-const departments_items = ref([])
+const departaments_items = ref([])
 const categories_items = ref([])
 const sub_categories_items = ref([])
 
@@ -26,46 +26,40 @@ const product_type_items = [
 const service = productService()
 
 service.fetchDepartments().then(response => {
-  departments_items.value = response.data.data
+  departaments_items.value = response.data.data
 }).catch(err => {
   console.log(err)
 })
 
 const selectCategories = () => {
-  if (props.data.product.department.id !== '') {
-    props.data.product.category = null
+  props.data.product.category = null
 
-    const params = {
-      department_id: props.data.product.department.id,
-    }
-
-    console.log(params)
-
-    service.fetchCategories(params).then(response => {
-      categories_items.value = response.data.data
-    }).catch(err => {
-      console.log(err)
-    })
+  const params = {
+    department_id: props.data.product.departament.id,
   }
+
+  service.fetchCategories(params).then(response => {
+    categories_items.value = response.data.data
+  }).catch(err => {
+    console.log(err)
+  })
 }
 
 const selectSubCategories = () => {
-  if (props.data.product.category.id !== '') {
-    props.data.product.sub_category = null
+  props.data.product.sub_category = null
 
-    const params = {
-      category_id: props.data.product.category.id,
-    }
-
-    service.fetchSubCategories(params).then(response => {
-      sub_categories_items.value = response.data.data
-    }).catch(err => {
-      console.log(err)
-    })
+  const params = {
+    category_id: props.data.product.category.id,
   }
+
+  service.fetchSubCategories(params).then(response => {
+    sub_categories_items.value = response.data.data
+  }).catch(err => {
+    console.log(err)
+  })
 }
 
-const calculatedFinalValue = () => {
+const calculetedFinalValue = () => {
   if (props.data.product.purchase_price !== '' && props.data.product.percentage_on_sale !== '') {
     props.data.product.final_value = (props.data.product.purchase_price / (1 - props.data.product.percentage_on_sale / 100)).toFixed(2)
   }
@@ -186,7 +180,7 @@ mountStock()
                   type="number"
                   min="0"
                   required
-                  @blur="calculatedFinalValue"
+                  @blur="calculetedFinalValue"
                 />
               </VCol>
 
@@ -202,7 +196,7 @@ mountStock()
                   min="0"
                   type="number"
                   required
-                  @blur="calculatedFinalValue"
+                  @blur="calculetedFinalValue"
                 />
               </VCol>
 
@@ -226,8 +220,8 @@ mountStock()
                 md="4"
               >
                 <VSelect
-                  v-model="props.data.product.department"
-                  :items="departments_items"
+                  v-model="props.data.product.departament"
+                  :items="departaments_items"
                   :rules="[requiredValidator]"
                   item-title="name"
                   item-value="id"

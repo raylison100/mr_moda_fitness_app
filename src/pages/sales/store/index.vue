@@ -12,7 +12,7 @@ const saleData = ref({
     installment_value: '',
     cash_value: '',
     discount_value: '',
-    itens: [],
+    items: [],
   },
 })
 </script>

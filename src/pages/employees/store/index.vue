@@ -12,7 +12,7 @@ const productData = ref({
     final_value: '',
     product_type: '',
     stocks: [],
-    department: {
+    departament: {
       id: '',
       name: '',
     },
