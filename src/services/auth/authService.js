@@ -12,7 +12,7 @@ export const authService = defineStore('AuthService', {
     },
     update(body, id) {
       return axios.put(`/auth/update/${id}`, body, {
-        headers: { 'Authorization': 'Bearer ' + token },
+        headers: {'Authorization': 'Bearer ' + token},
       })
     },
   },
