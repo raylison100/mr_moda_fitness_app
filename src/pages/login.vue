@@ -149,6 +149,8 @@ const onSubmit = () => {
 <!--                  </RouterLink>-->
 <!--                </div>-->
 
+                <br>
+
                 <VBtn
                   block
                   type="submit"
@@ -171,7 +173,7 @@ const onSubmit = () => {
 <route lang="yaml">
   meta:
     layout: blank
-    action: read
+    action: login
     subject: Auth
     redirectIfLoggedIn: true
 </route>
