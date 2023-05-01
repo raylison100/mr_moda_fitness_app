@@ -224,5 +224,5 @@ const paginationData = computed(() => {
 <route lang="yaml">
 meta:
   action: read
-  subject: Sales
+  subject: Products
 </route>

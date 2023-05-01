@@ -25,6 +25,6 @@ const spendingData = ref({
 
 <route lang="yaml">
 meta:
-  action: read
-  subject: Auth
+  action: write
+  subject: Spendings
 </route>

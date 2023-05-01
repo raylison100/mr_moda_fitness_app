@@ -25,6 +25,6 @@ const userData = ref({
 
 <route lang="yaml">
 meta:
-  action: read
+  action: write
   subject: Auth
 </route>

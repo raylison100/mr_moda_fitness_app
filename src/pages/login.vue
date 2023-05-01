@@ -31,7 +31,6 @@ const errors = ref({
 const refVForm = ref()
 const email = ref()
 const password = ref()
-const rememberMe = ref(false)
 
 const login = () => {
   axios.post('/auth/login', {
@@ -103,10 +102,10 @@ const onSubmit = () => {
           />
 
           <h5 class="text-h5 font-weight-semibold mb-1">
-            Welcome to {{ themeConfig.app.title }}! 👋🏻
+            {{ themeConfig.app.title }}! 👋🏻
           </h5>
           <p class="mb-0">
-            Please sign-in to your account and start the adventure
+            Por favor, entre na sua conta
           </p>
         </VCardText>
 
@@ -137,18 +136,18 @@ const onSubmit = () => {
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
-                <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
-                  <VCheckbox
-                    v-model="rememberMe"
-                    label="Remember me"
-                  />
-                  <a
-                    class="text-primary ms-2 mb-1"
-                    href="#"
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
+<!--                <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">-->
+<!--                  <VCheckbox-->
+<!--                    v-model="rememberMe"-->
+<!--                    label="Remember me"-->
+<!--                  />-->
+<!--                  <RouterLink-->
+<!--                    class="text-primary ms-2 mb-1"-->
+<!--                    :to="{ name: 'forgot-password' }"-->
+<!--                  >-->
+<!--                    Forgot Password?-->
+<!--                  </RouterLink>-->
+<!--                </div>-->
 
                 <VBtn
                   block
@@ -166,13 +165,13 @@ const onSubmit = () => {
 </template>
 
 <style lang="scss">
-@use "@core/scss/template/pages/page-auth.scss";
+@use "@core/scss/template/pages/page-auth";
 </style>
 
 <route lang="yaml">
   meta:
     layout: blank
-    action: login
+    action: read
     subject: Auth
     redirectIfLoggedIn: true
 </route>

@@ -74,5 +74,5 @@ service.fetchSpendingId(Number(route.params.id)).then(response => {
 <route lang="yaml">
 meta:
   action: read
-  subject: Sales
+  subject: Spendings
 </route>

@@ -200,5 +200,5 @@ const paginationData = computed(() => {
 <route lang="yaml">
 meta:
   action: read
-  subject: Auth
+  subject: Spendings
 </route>

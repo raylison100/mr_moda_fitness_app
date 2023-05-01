@@ -4,7 +4,7 @@ export default [
   //   to: { name: 'dashboards-analytics' },
   //   icon: { icon: 'mdi-monitor-dashboard' },
   //   action: 'read',
-  //   subject: 'Sales',
+  //   subject: 'Dashboard',
   // },
   {
     title: 'Vendas',
@@ -18,21 +18,21 @@ export default [
     to: { name: 'products-list' },
     icon: { icon: 'mdi-hanger' },
     action: 'read',
-    subject: 'Sales',
+    subject: 'Products',
   },
   {
     title: 'Gastos',
     to: { name: 'spendings-list' },
     icon: { icon: 'mdi-hand-coin' },
     action: 'read',
-    subject: 'Auth',
+    subject: 'Spendings',
   },
   {
     title: 'Usuários',
     to: { name: 'users-list' },
     icon: { icon: 'mdi-account-settings' },
     action: 'read',
-    subject: 'Auth',
+    subject: 'write',
   },
 ]
 

@@ -191,6 +191,6 @@ service.fetchProductId(Number(route.params.id)).then(response => {
 
 <route lang="yaml">
 meta:
-  action: read
-  subject: Sales
+  action: write
+  subject: Products
 </route>

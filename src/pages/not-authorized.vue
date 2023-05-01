@@ -1,5 +1,5 @@
 <script setup>
-import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
+import {useGenerateImageVariant} from '@core/composable/useGenerateImageVariant'
 import page401 from '@images/pages/401.png'
 import miscMaskDark from '@images/pages/misc-mask-dark.png'
 import miscMaskLight from '@images/pages/misc-mask-light.png'
@@ -38,7 +38,7 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 </template>
 
 <style lang="scss">
-@use "@core/scss/template/pages/misc.scss";
+@use "@core/scss/template/pages/misc";
 </style>
 
 <route lang="yaml">

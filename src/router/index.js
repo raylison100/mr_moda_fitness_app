@@ -1,15 +1,15 @@
-import { setupLayouts } from 'virtual:generated-layouts'
-import { createRouter, createWebHistory } from 'vue-router'
+import {setupLayouts} from 'virtual:generated-layouts'
+import {createRouter, createWebHistory} from 'vue-router'
 import routes from '~pages'
-import { isUserLoggedIn } from "@/router/utils"
-import { canNavigate } from "@layouts/plugins/casl"
+import {isUserLoggedIn} from "@/router/utils"
+import {canNavigate} from "@layouts/plugins/casl"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      redirect: () => ({ name: 'sales-list' }),
+      redirect: () => ({name: 'sales-list'}),
     },
     ...setupLayouts(routes),
   ],
@@ -21,13 +21,13 @@ router.beforeEach(to => {
 
   if (canNavigate(to)) {
     if (to.meta.redirectIfLoggedIn && isLoggedIn)
-      return { name: 'dashboards-analytics' }
-  }
-  else {
-    if (isLoggedIn)
-      return { name: 'common-not-authorized' }
-    else
-      return { name: 'common-login', query: { to: to.name !== 'common-not-authorized' ? to.fullPath : undefined } }
+      return '/'
+  } else {
+    if (isLoggedIn) {
+      return {name: 'not-authorized'}
+    } else {
+      return {name: 'login', query: {to: to.name !== 'index' ? to.fullPath : undefined}}
+    }
   }
 })
 export default router

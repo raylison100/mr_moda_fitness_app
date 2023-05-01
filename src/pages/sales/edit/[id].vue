@@ -42,6 +42,6 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
 
 <route lang="yaml">
 meta:
-  action: read
+  action: write
   subject: Sales
 </route>

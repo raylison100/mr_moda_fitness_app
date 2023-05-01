@@ -29,6 +29,6 @@ const saleData = ref({
 
 <route lang="yaml">
 meta:
-  action: read
+  action: write
   subject: Sales
 </route>

@@ -22,5 +22,5 @@
 <route lang="yaml">
   meta:
     action: read
-    subject: Sales
+    subject: Dashboard
 </route>

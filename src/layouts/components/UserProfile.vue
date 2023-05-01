@@ -1,6 +1,6 @@
 <script setup>
-import { initialAbility } from '@/plugins/casl/ability'
-import { useAppAbility } from '@/plugins/casl/useAppAbility'
+import {initialAbility} from '@/plugins/casl/ability'
+import {useAppAbility} from '@/plugins/casl/useAppAbility'
 
 const router = useRouter()
 const ability = useAppAbility()
@@ -11,7 +11,7 @@ const logout = () => {
   localStorage.removeItem('accessToken')
   localStorage.removeItem('userAbilities')
   ability.update(initialAbility)
-  router.push('/common/login')
+  router.push('/login')
 }
 
 const acronymsName = () => {
@@ -19,11 +19,15 @@ const acronymsName = () => {
 
   let acronymsName = []
 
-  for (let i = 0; i < 2; i++) {
-    acronymsName[i] = name[i][0].toUpperCase()
+  if (name.length > 1){
+    acronymsName[0] = name[0].charAt(0).toUpperCase()
+    acronymsName[1] = name[1].charAt(0).toUpperCase()
+  }else{
+    acronymsName[0] = name[0].charAt(0).toUpperCase()
+    acronymsName[1] = name[0].charAt(1).toUpperCase()
   }
 
-  return acronymsName.join("")
+  return acronymsName.join('')
 }
 </script>
 

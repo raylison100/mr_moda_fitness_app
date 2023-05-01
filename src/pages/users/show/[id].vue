@@ -105,6 +105,6 @@ service.fetchUserId(Number(route.params.id)).then(response => {
 
 <route lang="yaml">
 meta:
-  action: read
+  action: write
   subject: Auth
 </route>

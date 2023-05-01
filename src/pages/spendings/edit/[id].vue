@@ -38,6 +38,6 @@ service.fetchSpendingId(Number(route.params.id)).then(response => {
 
 <route lang="yaml">
 meta:
-  action: read
-  subject: Auth
+  action: write
+  subject: Spendings
 </route>
