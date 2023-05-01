@@ -31,8 +31,8 @@ export default [
     title: 'Usuários',
     to: { name: 'users-list' },
     icon: { icon: 'mdi-account-settings' },
-    action: 'read',
-    subject: 'write',
+    action: 'write',
+    subject: 'Auth',
   },
 ]
 

@@ -10,8 +10,8 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 <template>
   <div class="misc-wrapper">
     <ErrorHeader
-      error-title="Page Not Found :("
-      error-description="We couldn't find the page you are looking for."
+      error-title="Página não encontrada :("
+      error-description="Não foi possível encontrar a página que você está procurando."
     />
     <VBtn
       to="/"

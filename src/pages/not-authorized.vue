@@ -12,11 +12,11 @@ const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
     <div class="misc-center-content text-center mb-12">
       <!-- 👉 Title and subtitle -->
       <h4 class="text-h4 font-weight-medium mb-3">
-        You are not authorized! 🔐
+        Você não tem autorização! 🔐
       </h4>
-      <p>You dont have permission to access this page. Go Home!</p>
+      <p>Você não tem permissão para acessar esta página. Ir para casa!</p>
       <VBtn to="/">
-        Back to Home
+        Voltar
       </VBtn>
     </div>
 
