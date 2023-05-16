@@ -66,6 +66,7 @@ const paginationData = computed(() => {
           <div class="me-3">
             <!-- 👉 Create Products -->
             <VBtn
+              v-if="$can('write', 'Sales')"
               prepend-icon="tabler-plus"
               :to="{ name: 'sales-store' }"
             >
@@ -184,6 +185,7 @@ const paginationData = computed(() => {
                   color="default"
                   size="x-small"
                   :disabled="sale.status === 'CANCELED'"
+                  v-if="$can('write', 'Sales')"
                   :to="{ name: 'sales-edit-id', params: { id: sale.id } }"
                 >
                   <VIcon

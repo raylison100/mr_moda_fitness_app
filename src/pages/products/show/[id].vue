@@ -401,6 +401,6 @@ const stocks = computed(() => {
 
 <route lang="yaml">
 meta:
-  action: write
+  action: read
   subject: Products
 </route>
