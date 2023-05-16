@@ -1,7 +1,7 @@
 <script setup>
 /* eslint-disable vue/no-mutating-props */
-import { requiredValidator } from '@validators'
-import { productService } from "@/services/product/productService"
+import {requiredValidator} from '@validators'
+import {productService} from "@/services/product/productService"
 
 const props = defineProps({
   data: {
@@ -119,8 +119,9 @@ const storeProduct = () => {
       console.log(err)
     })
   } else {
-    service.storeProduct(body).then(() => {
-      router.back()
+    service.storeProduct(body).then((res) => {
+      let productId = res.data.data.id
+      router.push({name: 'products-show-id', params: {id: productId}})
     }).catch(err => {
       console.log(err)
     })
@@ -273,7 +274,7 @@ mountStock()
             </VRow>
           </VCardText>
           <br>
-          <VDivider />
+          <VDivider/>
           <br>
           <VCardText>
             <h4>
@@ -289,14 +290,14 @@ mountStock()
                 <VRow no-gutters>
                   <VCol
                     cols="12"
-                    md="2"
+                    md="1"
                   >
                     <label>{{ item.size }}</label>
                   </VCol>
 
                   <VCol
                     cols="12"
-                    md="4"
+                    md="3"
                   >
                     <VTextField
                       v-model="props.data.product.stocks[index].qtd"
@@ -331,6 +332,6 @@ mountStock()
 
 <route lang="yaml">
 meta:
-  action: read
-  subject: Sales
+action: read
+subject: Sales
 </route>

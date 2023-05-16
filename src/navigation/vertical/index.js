@@ -1,11 +1,11 @@
 export default [
-  // {
-  //   title: 'Dashboard',
-  //   to: { name: 'dashboards-analytics' },
-  //   icon: { icon: 'mdi-monitor-dashboard' },
-  //   action: 'read',
-  //   subject: 'Dashboard',
-  // },
+  {
+    title: 'Dashboard',
+    to: { name: 'dashboards-analytics' },
+    icon: { icon: 'mdi-monitor-dashboard' },
+    action: 'read',
+    subject: 'Dashboard',
+  },
   {
     title: 'Vendas',
     to: { name: 'sales-list' },
