@@ -1,0 +1,32 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+     runs-on: ubuntu-latest
+     steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3.5.2
+
+      - name: Npm build
+        uses: actions/setup-node@v3
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run build task
+        run: npm run build
+
+      - name: Executing remote ssh commands using key
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            scp /dist root@${{ secrets.HOST }}:/var/www/html/mr_moda_fitness/mr_moda_fitness_app
+            
+
