@@ -70,7 +70,7 @@ const paginationData = computed(() => {
               prepend-icon="tabler-plus"
               :to="{ name: 'sales-store' }"
             >
-              Nova Venda SDsad
+              Nova Venda SDsadasdsa
             </VBtn>
           </div>
           <VSpacer />
