@@ -6,13 +6,13 @@ export default [
     action: 'read',
     subject: 'Dashboard',
   },
-  // {
-  //   title: 'Vendas',
-  //   to: { name: 'sales-list' },
-  //   icon: { icon: 'mdi-cart-variant' },
-  //   action: 'read',
-  //   subject: 'Sales',
-  // },
+  {
+    title: 'Vendas',
+    to: { name: 'sales-list' },
+    icon: { icon: 'mdi-cart-variant' },
+    action: 'read',
+    subject: 'Sales',
+  },
   {
     title: 'Produtos',
     to: { name: 'products-list' },
