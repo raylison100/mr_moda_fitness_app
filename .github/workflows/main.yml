@@ -19,4 +19,6 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd /var/www/html/mr_moda_fitness/mr_moda_fitness_app
+            git pull origin main
+            cd /var/www/html/mr_moda_fitness/mr_moda_fitness
             docker-compose up --build -d dashboard_mr_moda_fitness_app
