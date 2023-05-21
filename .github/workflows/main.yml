@@ -22,4 +22,3 @@ jobs:
             git pull origin main
             cd /var/www/html/mr_moda_fitness/mr_moda_fitness
             docker-compose up --build -d dashboard_mr_moda_fitness_app
-            docker-compose restart dashboard_mr_moda_fitness_app
