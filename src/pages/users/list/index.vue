@@ -135,7 +135,7 @@ const paginationData = computed(() => {
                   variant="text"
                   color="default"
                   size="x-small"
-                  v-if="$can('write', 'Users')"
+                  v-if="$can('write', 'Auth')"
                   :to="{ name: 'users-edit-id', params: { id: user.id } }"
                 >
                   <VIcon
