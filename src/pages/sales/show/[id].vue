@@ -15,7 +15,7 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
     installment_value: response.data.data.installment_value,
     cash_value: response.data.data.cash_value,
     discount_value: response.data.data.discount_value,
-    itens: response.data.data.itens,
+    items: response.data.data.items,
   }
 
 }).catch(err => {
@@ -114,7 +114,7 @@ service.fetchSaleId(Number(route.params.id)).then(response => {
           <br>
           <VRow>
             <VCol
-              v-for="(item, index) in saleData.itens"
+              v-for="(item, index) in saleData.items"
               v-bind="index"
               cols="4"
             >

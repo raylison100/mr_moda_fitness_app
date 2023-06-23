@@ -29,10 +29,11 @@ const init = () => {
 const findProduct = () => {
   service.fetchProductCode(props.data.stock.code).then(response => {
     if (response.status === 200) {
+
       let product = response.data.data
 
       props.data.product = product
-      maxStock.value = (product.stocks.find(element => element.code === props.data.stock.code).qtd)
+      maxStock.value = (product.stocks.find(element => element.code === props.data.stock.code)?.qtd)
 
       if (props.data.is_it_a_new_item) {
         props.data.qtd = 1
