@@ -64,7 +64,7 @@ const paginationData = computed(() => {
           <div class="me-3">
             <!-- 👉 Create Products -->
             <VBtn
-              v-if="$can('write', 'Users')"
+              v-if="$can('write', 'Auth')"
               prepend-icon="tabler-plus"
               :to="{ name: 'users-store' }"
             >
